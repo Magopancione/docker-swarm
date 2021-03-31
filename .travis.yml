@@ -15,7 +15,7 @@ before_install:
   - sudo apt-get update -qq
   - mkdir /home/travis/.azure
   - touch /home/travis/.azure/credentials
-  - printf "[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant" > /home/travis/.azure/credentials
+  - printf "[default]\nsubscription_id=${subscriptionId}\nclient_id=${clientId}\nsecret=${secret}\ntenant=${tenant}" > /home/travis/.azure/credentials
   - cat  /home/travis/.azure/credentials
   - run_test(){
       file=$1;
