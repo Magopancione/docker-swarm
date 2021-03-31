@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: azure
   connection: local
   roles:
     - role: danny.vmazure
