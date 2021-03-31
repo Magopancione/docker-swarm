@@ -7,31 +7,24 @@ env:
     - number_per_job=2
     - message=()
     - ANSIBLE_CONFIG=/home/travis/.ansible/ansible.cfg
-    - ANSIBLE_VERSION=latest
+    - ANSIBLE_VERSION=2.9.15
   matrix:
     - id=1
 
 before_install:
   - sudo apt-get update -qq
-  - mkdir ~/.azure
-  - touch ~/.azure/credentials
-  - printf "[default]\nsubscription_id=${subscriptionId}\nclient_id=${clientId}\nsecret=${secret}\ntenant=${tenant}" > ~/.azure/credentials
+  - mkdir /home/travis/.azure
+  - touch /home/travis/.azure/credentials
+  - printf "[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant\n" > /home/travis/.azure/credentials
+  - cat  /home/travis/.azure/credentials
   - run_test(){
       file=$1;
-      filename=${file##tests/integration/};
-      test_name=${file##tests/integration/targets/};
-      test_name=${test_name%%/tasks/main.yml};
-      m=1;
-
-      echo Run test $test_name from $filename;
-      resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
-      resource_prefix=$(date +%s);
-      resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
-      printf "{\"resource_group\":\"$resource_group\",\n\"test\":\"$test_name\",\n\"resource_group_secondary\":\"$resource_group_secondary\",\n\"azure_object_id\":\"$AZURE_OBJECT_ID\",\n\"resource_prefix\":\"$resource_prefix\",\n\"azure_tenant\":\"$AZURE_TENANT\",\n\"azure_client_id\":\"$AZURE_CLIENT_ID\",\n\"azure_secret\":\"$AZURE_SECRET\",\n\"azure_subscription_id\":\"$AZURE_SUBSCRIPTION_ID\"}" > ~/arg.json;
-      cat ~/arg.json;
-
-      travis_wait 50 ansible-playbook $file ;
-
+      test_name=${file##./};
+      test_name=${test_name%%.yml};
+      delete_resource_group=${2:-true};
+      resource_group=${3:-sampletest$(date +%s)};
+      echo Run playbook $file;
+      travis_wait 50 ansible-playbook $file -vvv ;
       if [ $? -ne 0 ]; then
         echo test $file failed;
         message+=($file);
@@ -55,9 +48,10 @@ before_install:
 
     }
 
-install:
 
 install:
+
+
   - sudo apt-get install -y git
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -67,9 +61,6 @@ install:
   - sudo usermod -aG docker ${USER}
   - sudo apt-get install -y default-jdk
   - sudo apt-get install -y maven sshpass
-
-  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible[azure]; else pip
-    install ansible[azure]==$ANSIBLE_VERSION; fi
   - ansible --version
   - ansible-galaxy install Azure.azure_preview_modules
   - pip install -I -r ~/.ansible/roles/Azure.azure_preview_modules/files/requirements-azure.txt
@@ -90,4 +81,3 @@ script:
 notifications:
   email:
     - sonoilmagopancione@gmail.com
-
