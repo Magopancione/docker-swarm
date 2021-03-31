@@ -6,7 +6,6 @@ env:
     - exit_code=0
     - number_per_job=2
     - message=()
-    - ANSIBLE_VERSION=latest
     - ANSIBLE_CONFIG=/home/travis/.ansible/ansible.cfg
     - ANSIBLE_VERSION=2.9.15
   matrix:
@@ -23,7 +22,7 @@ before_install:
 
       echo Run playbook $file;
 
-      travis_wait 50 ansible-playbook $file --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
+      travis_wait 50 ansible-playbook $file -v --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
