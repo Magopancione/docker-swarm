@@ -1,0 +1,21 @@
+---
+# tasks file for danny.application
+- name: Install git
+  yum:
+    name: git
+    state: latest
+
+- name: clone wordpress app
+  git:
+    repo: 'https://github.com/jlk/wordpress-swarm.git'
+    dest: wordpress-swarm
+
+- name: deploy wordpress stack
+  command: docker stack deploy --compose-file wordpress-swarm/docker-stack.yml wordpress 
+  environment:
+      #DOCKER_HOST: "tcp://{{ hostvars[swarm_worker_hosts].ansible_ssh_host  }}:2376"
+      DOCKER_HOST: "tcp://{{swarm_worker_hosts }}:2376"
+      DOCKER_TLS_VERIFY: 1
+  register: docker_stack_deploy_result
+- debug:
+    var: docker_stack_deploy_result
