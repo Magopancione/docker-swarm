@@ -89,6 +89,7 @@ install:
   - cp -f ./ansible.cfg /home/travis/.ansible
 
   - git clone https://github.com/Magopancione/docker-swarm.git 
+  - git checkout $TRAVIS_BRANCH
 
 script:
   - scan_test
