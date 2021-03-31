@@ -1,0 +1,23 @@
+- hosts: managers,workers
+  roles:
+    - role: danny.docker
+
+- hosts: managers
+  serial: 1
+  roles:
+    - role: Bessonov.docker-swarm
+      swarm_worker_hosts: workers
+
+- hosts: managers
+  roles:
+    - role: Bessonov.docker-remote-api
+      docker_remote_client_use_certs_as_default: true
+      docker_remote_certs_server_additional_subjects:
+        - "IP: {{ hostvars[groups['managers'][0]].ansible_ssh_host }}"
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: danny.application
+      swarm_worker_hosts: "{{ hostvars[groups['managers'][0]].ansible_ssh_host }}"   
+
