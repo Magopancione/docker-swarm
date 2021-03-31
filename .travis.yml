@@ -4,10 +4,10 @@ python: '2.7'
 env:
   global:
     - exit_code=0
-    - number_per_job=1
+    - number_per_job=2
     - message=()
     - ANSIBLE_CONFIG=/home/travis/.ansible/ansible.cfg
-    - ANSIBLE_VERSION=latest
+    - ANSIBLE_VERSION=2.9.15
   matrix:
     - id=1
 
@@ -16,7 +16,6 @@ before_install:
   - mkdir /home/travis/.azure
   - touch /home/travis/.azure/credentials
   - printf "[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant\n" > /home/travis/.azure/credentials
-  - echo "-echo---[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant\n--echo-"
   - cat  /home/travis/.azure/credentials
   - run_test(){
       file=$1;
