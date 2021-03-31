@@ -60,10 +60,11 @@
     azure_rm_publicipaddress:
       resource_group: "{{ resource_group }}"
       allocation_method: Static
+      domain_name:  "{{ vm_name }}{{ item }}"
       name: "{{ vm_name }}_{{ item }}"
     loop:
-      - A
-      - B
+      - a
+      - b
     register: pip_output
 
   - name: Create virtual network inteface cards for VM A and B
@@ -77,6 +78,8 @@
     loop:
       - A
       - B
+
+
 
   - name: Create VM A and B
     azure_rm_virtualmachine:
