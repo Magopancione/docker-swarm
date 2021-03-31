@@ -30,7 +30,7 @@ before_install:
       printf "{\"resource_group\":\"$resource_group\",\n\"test\":\"$test_name\",\n\"resource_group_secondary\":\"$resource_group_secondary\",\n\"azure_object_id\":\"$AZURE_OBJECT_ID\",\n\"resource_prefix\":\"$resource_prefix\",\n\"azure_tenant\":\"$AZURE_TENANT\",\n\"azure_client_id\":\"$AZURE_CLIENT_ID\",\n\"azure_secret\":\"$AZURE_SECRET\",\n\"azure_subscription_id\":\"$AZURE_SUBSCRIPTION_ID\"}" > ~/arg.json;
       cat ~/arg.json;
 
-      travis_wait 50 ansible-playbook $file -v ;
+      travis_wait 50 ansible-playbook $file ;
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
@@ -52,11 +52,6 @@ before_install:
       echo branch is $branch;
 
       run_test playbook.yml;	
-
-      printf "{\"resource_group\":\"$resource_group\",\n\"test\":\"$test_name\",\n\"resource_group_secondary\":\"$resource_group_secondary\",\n\"azure_object_id\":\"$AZURE_OBJECT_ID\",\n\"resource_prefix\":\"$resource_prefix\",\n\
-"azure_tenant\":\"$AZURE_TENANT\",\n\"azure_client_id\":\"$AZURE_CLIENT_ID\",\n\"azure_secret\":\"$AZURE_SECRET\",\n\"azure_subscription_id\":\"$AZURE_SUBSCRIPTION_ID\"}" > ~/arg.json;
-      cat ~/arg.json;
-
 
     }
 
