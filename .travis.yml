@@ -43,7 +43,7 @@ before_install:
 
       branch=$TRAVIS_BRANCH;
       echo branch is $branch;
-      git pull;
+      #git pull;
 
       diffstr=$(git diff $branch remotes/origin/master --name-only  -- '*.yml' --no-pager);
       changedfiles=($diffstr);
