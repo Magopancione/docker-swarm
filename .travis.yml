@@ -7,7 +7,7 @@ env:
     - number_per_job=2
     - message=()
     - ANSIBLE_CONFIG=/home/travis/.ansible/ansible.cfg
-    - ANSIBLE_VERSION=2.9.15
+    - ANSIBLE_VERSION=latest
   matrix:
     - id=1
 
@@ -61,6 +61,7 @@ install:
     install ansible[azure]==$ANSIBLE_VERSION; fi
   - ansible --version
   - ansible-galaxy install azure.azure_preview_modules
+  - pip install xmltodict
   - pip install -I -r ~/.ansible/roles/azure.azure_preview_modules/files/requirements-azure.txt
   - pip install docker
   - pip freeze
