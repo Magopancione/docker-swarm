@@ -1,0 +1,7 @@
+- name: add docker users
+  become: true
+  user:
+    name: '{{ item }}'
+    groups: docker
+    append: yes
+  with_items: '{{ docker_engine_allow_non_root }}'

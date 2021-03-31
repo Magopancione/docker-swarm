@@ -1,0 +1,4 @@
+---
+# defaults file for danny.docker
+docker_engine_version: 20.10.5
+docker_engine_allow_non_root: [azureuser]

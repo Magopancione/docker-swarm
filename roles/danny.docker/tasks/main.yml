@@ -1,0 +1,5 @@
+---
+# tasks file for danny.docker
+- include: lvs-prepare.yaml  
+- include: docker_engine_install.yml
+- include: enable_user.yaml

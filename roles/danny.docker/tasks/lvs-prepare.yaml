@@ -1,0 +1,16 @@
+   - name: Install lvm2
+     yum:
+       name: lvm2
+       state: latest
+
+
+   - lvol:
+       vg: rootvg
+       lv: varlv
+       size: +100%FREE
+     become: yes
+
+
+   - name: resizing filesystem
+     command: resize2fs /dev/mapper/rootvg-varlv
+     become: yes
