@@ -126,6 +126,7 @@
           file:
             path: "{{ local_image_tmp.path }}"
             state: absent
+
       when: docker_remote_client_host not in ('localhost', '127.0.0.1')
 
   when: deploy_container.changed

@@ -2,9 +2,10 @@
      yum:
        name: lvm2
        state: latest
+     become: yes
 
-
-   - lvol:
+   - name: extend volume
+     lvol:
        vg: rootvg
        lv: varlv
        size: +100%FREE

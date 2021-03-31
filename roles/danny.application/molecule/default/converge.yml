@@ -1,0 +1,6 @@
+- hosts: localhost
+  connection: local
+  roles:
+    - role: danny.application
+      swarm_worker_hosts: "swwarma.westeurope.cloudapp.azure.com"   
+

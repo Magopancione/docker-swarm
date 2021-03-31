@@ -81,6 +81,7 @@
   run_once: true
   delegate_to: "{{ hostname_to_node[item.split('|')[0]] }}"
   delegate_facts: true
+  debugger: on_failed
   set_fact:
     swarm_node_status: "{{ item.split('|')[1] }}"
     swarm_node_availability: "{{ item.split('|')[2] }}"

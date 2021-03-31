@@ -1,0 +1,16 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: instance
+    image: centos:6.9
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+    options:
+      x: [201, 403, 401 301]
+verifier:
+  name: ansible
