@@ -24,7 +24,7 @@ before_install:
       resource_group=${3:-sampletest$(date +%s)};
       echo Run playbook $file;
 
-      travis_wait 50 ansible-playbook $file -vvv --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
+      travis_wait 50 ansible-playbook $file -vvv --extra-vars "{\"subscription_id\":$AZURE_SUBSCRIPTION_ID,\"tenant\":$AZURE_TENANT,\"client_id\":$AZURE_CLIENT_ID,\"secret\":$AZURE_SECRET,\"resource_group_name\":$resource_group}";
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
