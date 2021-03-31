@@ -13,16 +13,26 @@ env:
 
 before_install:
   - sudo apt-get update -qq
+  - mkdir ~/.azure
+  - touch ~/.azure/credentials
+  - printf "[default]\nsubscription_id=${subscriptionId}\nclient_id=${clientId}\nsecret=${secret}\ntenant=${tenant}" > ~/.azure/credentials
   - run_test(){
       file=$1;
-      test_name=${file##./};
-      test_name=${test_name%%.yml};
-      delete_resource_group=${2:-true};
-      resource_group=${3:-sampletest$(date +%s)};
+      filename=${file##tests/integration/};
+      test_name=${file##tests/integration/targets/};
+      test_name=${test_name%%/tasks/main.yml};
+      m=1;
 
-      echo Run playbook $file;
+      echo Run test $test_name from $filename;
+      resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
+      resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
+      resource_prefix=$(date +%s);
 
-      travis_wait 50 ansible-playbook $file -vvv --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
+      printf "{\"resource_group\":\"$resource_group\",\n\"test\":\"$test_name\",\n\"resource_group_secondary\":\"$resource_group_secondary\",\n\"azure_object_id\":\"$AZURE_OBJECT_ID\",\n\"resource_prefix\":\"$resource_prefix\",\n\"azure_tenant\":\"$AZURE_TENANT\",\n\"azure_client_id\":\"$AZURE_CLIENT_ID\",\n\"azure_secret\":\"$AZURE_SECRET\",\n\"azure_subscription_id\":\"$AZURE_SUBSCRIPTION_ID\"}" > ~/arg.json;
+      cat ~/arg.json;
+
+
+      travis_wait 50 ansible-playbook $file -vvv ;
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
