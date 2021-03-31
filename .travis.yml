@@ -15,7 +15,7 @@ before_install:
   - sudo apt-get update -qq
   - mkdir /home/travis/.azure
   - touch /home/travis/.azure/credentials
-  - printf "[default]\nsubscription_id=${subscriptionId}\nclient_id=${clientId}\nsecret=${secret}\ntenant=${tenant}" > /home/travis/.azure/credentials
+  - printf "[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant" > /home/travis/.azure/credentials
   - run_test(){
       file=$1;
       test_name=${file##./};
@@ -23,7 +23,7 @@ before_install:
       delete_resource_group=${2:-true};
       resource_group=${3:-sampletest$(date +%s)};
       echo Run playbook $file;
-      travis_wait 50 ansible-playbook $file -vvv --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
+      travis_wait 50 ansible-playbook $file -vvv 
       if [ $? -ne 0 ]; then
         echo test $file failed;
         message+=($file);
