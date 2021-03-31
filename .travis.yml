@@ -23,7 +23,7 @@ before_install:
       delete_resource_group=${2:-true};
       resource_group=${3:-sampletest$(date +%s)};
       echo Run playbook $file;
-      travis_wait 50 ansible-playbook $file -vvv 
+      travis_wait 50 ansible-playbook $file -vvv ;
       if [ $? -ne 0 ]; then
         echo test $file failed;
         message+=($file);
