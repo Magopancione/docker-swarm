@@ -18,19 +18,12 @@ before_install:
   - printf "[default]\nsubscription_id=${subscriptionId}\nclient_id=${clientId}\nsecret=${secret}\ntenant=${tenant}" > ~/.azure/credentials
   - run_test(){
       file=$1;
-      filename=${file##tests/integration/};
-      test_name=${file##tests/integration/targets/};
-      test_name=${test_name%%/tasks/main.yml};
       m=1;
 
-      echo Run test $test_name from $filename;
-      resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
-      resource_prefix=$(date +%s);
-      resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
-      printf "{\"resource_group\":\"$resource_group\",\n\"test\":\"$test_name\",\n\"resource_group_secondary\":\"$resource_group_secondary\",\n\"azure_object_id\":\"$AZURE_OBJECT_ID\",\n\"resource_prefix\":\"$resource_prefix\",\n\"azure_tenant\":\"$AZURE_TENANT\",\n\"azure_client_id\":\"$AZURE_CLIENT_ID\",\n\"azure_secret\":\"$AZURE_SECRET\",\n\"azure_subscription_id\":\"$AZURE_SUBSCRIPTION_ID\"}" > ~/arg.json;
-      cat ~/arg.json;
+      echo Run playbook: $file;
+      resource_group="test";
 
-      travis_wait 50 ansible-playbook $file ;
+      travis_wait 50 ansible-playbook $file --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group_name\":$resource_group}";
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
@@ -90,5 +83,4 @@ script:
 notifications:
   email:
     - sonoilmagopancione@gmail.com
-
 
