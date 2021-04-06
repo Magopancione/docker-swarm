@@ -74,7 +74,7 @@ install:
   - git clone https://github.com/Magopancione/docker-swarm.git 
   - git checkout $TRAVIS_BRANCH
   - ansible --version
-  - ansible-playbook playbook.yml -vvv;
+  - sudo ansible-playbook playbook.yml -vvv;
 
   
 
