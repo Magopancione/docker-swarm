@@ -28,7 +28,7 @@ before_install:
       resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
       resource_prefix=$(date +%s);
       resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
-      travis_wait 50 ansible-playbook $file -vvv;
+      travis_wait 80 ansible-playbook $file -vvv;
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
@@ -74,6 +74,9 @@ install:
   - git clone https://github.com/Magopancione/docker-swarm.git 
   - git checkout $TRAVIS_BRANCH
   - ansible --version
+  - ansible-playbook playbook.yml -vvv;
+
+  
 
 script:
   - scan_test
