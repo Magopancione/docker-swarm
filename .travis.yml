@@ -16,6 +16,7 @@ before_install:
   - mkdir ~/.azure
   - touch ~/.azure/credentials
   - printf "[default]\nsubscription_id=$subscriptionId\nclient_id=$clientId\nsecret=$secret\ntenant=$tenant\n" > ~/.azure/credentials
+  - cat ~/.azure/credentials
   - run_test(){
       file=$1;
       filename=${file##tests/integration/};
@@ -27,7 +28,7 @@ before_install:
       resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
       resource_prefix=$(date +%s);
       resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
-      travis_wait 50 ansible-playbook $file ;
+      travis_wait 50 ansible-playbook $file -vvv;
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
@@ -59,8 +60,6 @@ install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
-  - apt-cache policy docker-ce
-  - sudo apt-get install -y docker-ce
   - sudo usermod -aG docker ${USER}
   - sudo apt-get install -y default-jdk
   - sudo apt-get install -y maven sshpass
@@ -70,7 +69,6 @@ install:
   - pip install -I -r ~/.ansible/roles/Azure.azure_preview_modules/files/requirements-azure.txt
   - pip install azure_mgmt_privatedns 
   - pip install azure_cli_privatedns
-  - pip install docker
   - pip freeze
   - git clone https://github.com/Magopancione/docker-swarm.git 
   - git checkout $TRAVIS_BRANCH
