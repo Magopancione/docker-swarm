@@ -72,9 +72,8 @@ install:
   - pip install packaging
   - pip freeze
   - git clone https://github.com/Magopancione/docker-swarm.git 
-  - git checkout $TRAVIS_BRANCH
   - ansible --version
-  - sudo ansible-playbook playbook.yml -vvv;
+  - ansible-playbook playbook.yml -vvv;
 
   
 
