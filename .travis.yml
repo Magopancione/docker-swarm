@@ -28,7 +28,7 @@ before_install:
       resource_group="asb-roletest-${test_name##azure_rm_}$(date +%s)";
       resource_prefix=$(date +%s);
       resource_group_secondary="asb-roletest-${test_name##azure_rm_}$(date +%s)2nd";
-      travis_wait 80 ansible-playbook $file -v --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group\":$resource_group}";
+      travis_wait 180 ansible-playbook $file -v --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_group\":$resource_group}";
 
       if [ $? -ne 0 ]; then
         echo test $file failed;
