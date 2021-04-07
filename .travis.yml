@@ -73,7 +73,9 @@ install:
   - pip freeze
   - git clone https://github.com/Magopancione/docker-swarm.git 
   - ansible --version
-  - ansible-playbook playbook.yml -vvv;
+  - resource_group="roletest$(date +%s)";
+  - ansible-playbook playbook.yml -vvv  --extra-vars "{\"azure_subscription_id\":$AZURE_SUBSCRIPTION_ID,\"azure_tenant\":$AZURE_TENANT,\"azure_client_id\":$AZURE_CLIENT_ID,\"resource_
+group_name\":$resource_group}";
 
   
 
