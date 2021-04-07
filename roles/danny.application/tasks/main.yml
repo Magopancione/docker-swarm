@@ -4,6 +4,7 @@
   yum:
     name: git
     state: latest
+  ignore_errors: yes
 
 - name: clone wordpress app
   git:
